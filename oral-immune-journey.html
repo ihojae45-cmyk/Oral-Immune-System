@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oral Immune System — 구강 점막 면역과 치주염</title>
+
+<link rel="stylesheet" as="style" crossorigin
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+
+<style>
+  :root{
+    --navy:#0B1830;
+    --navy-2:#0F2038;
+    --teal:#2E8BA8;
+    --teal-light:#8FD3E8;
+    --coral:#F2A98D;
+    --rose:#E8778A;
+    --amber:#E2954A;
+    --danger:#C94B4B;
+    --ivory:#FAF7F1;
+    --ink:#132033;
+    --ink-soft:#57687A;
+    --card:#FFFFFF;
+    --line:#E4DFD4;
+    --font-body:'Pretendard', -apple-system, sans-serif;
+    --font-display:'Pretendard', -apple-system, sans-serif;
+    --font-mono:'Pretendard', -apple-system, sans-serif;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html{
+    scroll-snap-type:y proximity;
+    scroll-behavior:smooth;
+  }
+
+  body{
+    font-family:var(--font-body);
+    color:var(--ink);
+    background:var(--ivory);
+    overflow-x:hidden;
+  }
+
+  ::selection{background:var(--teal-light);color:var(--navy);}
+
+  .slide{
+    min-height:100vh;
+    scroll-snap-align:start;
+    position:relative;
+    padding:110px 8vw 90px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+  }
+
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:12.5px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--teal);
+    font-weight:600;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:18px;
+  }
+  .eyebrow::before{
+    content:'';
+    width:22px;height:1px;
+    background:var(--teal);
+    display:inline-block;
+  }
+
+  .reveal{opacity:0; transform:translateY(46px); transition:opacity .9s cubic-bezier(.2,.7,.3,1), transform .9s cubic-bezier(.2,.7,.3,1);}
+  .reveal.in-view{opacity:1; transform:translateY(0);}
+  .reveal-child{opacity:0; transform:translateY(28px); transition:opacity .7s ease, transform .7s ease;}
+  .in-view .reveal-child{opacity:1; transform:translateY(0);}
+  .reveal-child.d1{transition-delay:.08s;}
+  .reveal-child.d2{transition-delay:.18s;}
+  .reveal-child.d3{transition-delay:.28s;}
+  .reveal-child.d4{transition-delay:.38s;}
+
+  @media (prefers-reduced-motion: reduce){
+    .reveal, .reveal-child{transition:none; opacity:1; transform:none;}
+    html{scroll-behavior:auto;}
+  }
+
+  /* ---------- SIDE NAV ---------- */
+  #side-nav{
+    position:fixed;
+    right:26px; top:50%; transform:translateY(-50%);
+    z-index:200;
+    display:flex; flex-direction:column; gap:18px;
+  }
+  #side-nav a{
+    width:9px;height:9px;border-radius:50%;
+    background:rgba(19,32,51,.22);
+    position:relative;
+    transition:background .3s, transform .3s;
+  }
+  #side-nav a.active{background:var(--teal); transform:scale(1.35);}
+  #side-nav a .nav-tip{
+    position:absolute; right:22px; top:50%; transform:translateY(-50%);
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.05em;
+    white-space:nowrap; color:var(--ink);
+    background:var(--card); padding:4px 10px; border-radius:20px;
+    opacity:0; pointer-events:none; transition:opacity .2s;
+    box-shadow:0 4px 14px rgba(0,0,0,.08);
+  }
+  #side-nav a:hover .nav-tip{opacity:1;}
+
+  /* ================= HERO ================= */
+  #hero{
+    background:radial-gradient(ellipse at 30% 20%, #12294a 0%, var(--navy) 55%, #060e1c 100%);
+    color:white;
+    padding:0;
+    align-items:center; justify-content:center;
+    text-align:center;
+  }
+  #bubble-canvas{
+    position:absolute; inset:0; width:100%; height:100%;
+  }
+  .hero-inner{
+    position:relative; z-index:2;
+    max-width:820px; padding:0 24px;
+  }
+  .hero-inner .eyebrow{color:var(--teal-light); justify-content:center;}
+  .hero-inner .eyebrow::before{background:var(--teal-light);}
+  #hero h1{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:clamp(2.6rem, 7vw, 5.2rem);
+    letter-spacing:-.02em;
+    line-height:1.05;
+    background:linear-gradient(180deg,#ffffff 0%, #bfe3f0 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .hero-sub{
+    margin-top:26px;
+    font-size:clamp(1rem,2vw,1.18rem);
+    color:#c7d5e3;
+    line-height:1.7;
+    font-weight:400;
+  }
+  .scroll-cue{
+    margin-top:64px;
+    font-family:var(--font-mono);
+    font-size:11.5px; letter-spacing:.16em;
+    color:#7f97ad;
+    display:flex; align-items:center; gap:10px; justify-content:center;
+  }
+  .scroll-cue .bar{width:1px; height:28px; background:linear-gradient(#7f97ad,transparent); animation:scrollpulse 1.8s ease-in-out infinite;}
+  @keyframes scrollpulse{0%{opacity:.2}50%{opacity:1}100%{opacity:.2}}
+
+  /* ================= SECTION HEAD (shared) ================= */
+  .section-head{max-width:760px; margin-bottom:46px;}
+  .section-head h2{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:clamp(1.8rem,3.6vw,2.7rem);
+    color:var(--ink);
+    margin-bottom:14px;
+    letter-spacing:-.02em;
+  }
+  .section-head p{color:var(--ink-soft); font-size:1.02rem; line-height:1.7; max-width:640px;}
+
+  /* ================= SECTION: STRUCTURE ================= */
+  #structure{background:var(--ivory);}
+  .structure-grid{
+    display:grid; grid-template-columns:1.15fr .85fr; gap:44px; align-items:start;
+  }
+  .tissue-box{
+    background:var(--card); border:1px solid var(--line); border-radius:20px;
+    padding:26px 26px 18px;
+    box-shadow:0 20px 50px -30px rgba(11,24,48,.25);
+  }
+  .tissue-svg-wrap{position:relative; overflow:visible;}
+  #tissue-svg{width:100%; height:auto; display:block; cursor:pointer;}
+  .tissue-layer{transition:filter .25s, opacity .25s; cursor:pointer;}
+  .tissue-layer:hover{filter:brightness(1.06);}
+  .tissue-layer.active-layer{filter:brightness(1.1) saturate(1.1);}
+  .tissue-layer.active-layer > path:first-of-type{stroke:var(--navy); stroke-width:3; stroke-linejoin:round;}
+
+  .layer-pointer{
+    position:absolute; left:0; top:14.4%;
+    transform:translate(-100%,-50%);
+    display:flex; align-items:center; gap:0;
+    transition:top .45s cubic-bezier(.4,0,.2,1);
+    pointer-events:none; z-index:5;
+  }
+  .layer-pointer .pointer-label{
+    background:var(--navy); color:#fff;
+    font-family:var(--font-body); font-size:11.5px; font-weight:600;
+    padding:6px 16px; border-radius:999px; white-space:nowrap;
+    box-shadow:0 4px 10px rgba(11,24,48,.28);
+    position:relative;
+  }
+  .layer-pointer .pointer-label::after{
+    content:''; position:absolute; right:-5px; top:50%; transform:translateY(-50%);
+    width:9px; height:9px; background:var(--navy); border-radius:50%;
+  }
+  .layer-pointer .arrow-shape{
+    width:0; height:0;
+    border-top:7px solid transparent; border-bottom:7px solid transparent;
+    border-left:11px solid var(--navy);
+    margin-left:6px;
+  }
+
+  .tissue-conclusion{
+    display:flex; align-items:flex-start; gap:14px;
+    margin-top:18px; padding:18px 22px;
+    background:#EAF3FB; border:1px solid #D3E6F5; border-radius:16px;
+  }
+  .tissue-conclusion .icon{
+    width:34px; height:34px; flex:none; border-radius:50%;
+    background:var(--teal); color:#fff; display:flex; align-items:center; justify-content:center;
+    font-size:16px;
+  }
+  .tissue-conclusion p{
+    font-size:.94rem; line-height:1.7; color:var(--navy); font-weight:500; font-style:italic;
+  }
+
+  .legend-row{
+    display:flex; flex-wrap:wrap; gap:18px;
+    margin-top:16px; padding-top:16px; border-top:1px dashed var(--line);
+    justify-content:center;
+  }
+  .legend-item{display:flex; align-items:center; gap:7px; font-size:12.5px; color:var(--ink-soft);}
+  .legend-item svg{width:20px; height:20px; flex:none;}
+
+  .info-panel{
+    background:var(--navy); color:white; border-radius:20px;
+    padding:34px 32px; min-height:380px;
+    position:relative; overflow:hidden;
+  }
+  .info-panel::before{
+    content:''; position:absolute; inset:0;
+    background:radial-gradient(circle at 100% 0%, rgba(46,139,168,.35), transparent 60%);
+  }
+  .info-panel-content{position:relative; z-index:1;}
+  .info-tag{font-family:var(--font-mono); font-size:11px; letter-spacing:.14em; color:var(--teal-light); text-transform:uppercase;}
+  .info-name{font-family:var(--font-display); font-weight:700; font-size:1.55rem; margin:10px 0 22px; line-height:1.3;}
+  .info-row{margin-bottom:18px;}
+  .info-row .k{font-family:var(--font-mono); font-size:11px; letter-spacing:.1em; color:#8fa6ba; text-transform:uppercase; margin-bottom:6px;}
+  .info-row .v{font-size:.95rem; line-height:1.75; color:#e7edf2;}
+  .info-fade{transition:opacity .25s ease;}
+
+  /* ================= SECTION: PATHWAY ================= */
+  #pathway{background:#101E33; color:white;}
+  #pathway .eyebrow{color:var(--teal-light);}
+  #pathway .eyebrow::before{background:var(--teal-light);}
+  #pathway .section-head h2{color:white;}
+  #pathway .section-head p{color:#aebccb;}
+
+  .flow-track{
+    display:flex; gap:10px; overflow-x:auto; padding:6px 2px 22px;
+    scrollbar-width:thin;
+  }
+  .flow-node{
+    flex:none; min-width:118px; text-align:center;
+    padding:16px 8px; border-radius:14px;
+    border:1px solid rgba(255,255,255,.14);
+    background:rgba(255,255,255,.04);
+    font-family:var(--font-mono); font-size:13px; letter-spacing:.03em;
+    cursor:pointer; transition:all .25s;
+    position:relative;
+  }
+  .flow-node .num{display:block; font-size:10px; color:#7f97ad; margin-bottom:6px;}
+  .flow-node:not(:last-child)::after{
+    content:'→'; position:absolute; right:-19px; top:50%; transform:translateY(-50%);
+    color:#4c6379; font-size:14px;
+  }
+  .flow-node.active{background:var(--teal); border-color:var(--teal); color:#06131f; font-weight:600;}
+  .flow-node.active .num{color:#0a2a35;}
+
+  .flow-controls{
+    display:flex; align-items:center; gap:14px; margin-top:4px;
+  }
+  .keyhint{
+    font-family:var(--font-mono); font-size:11.5px; color:#7f97ad;
+    display:flex; align-items:center; gap:6px;
+  }
+  .keyhint kbd{
+    background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.18);
+    border-radius:6px; padding:2px 7px; font-family:var(--font-mono); color:#cfe0ec;
+  }
+  .play-toggle{
+    display:flex; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.14);
+    border-radius:100px; padding:3px; gap:2px;
+  }
+  .play-toggle button{
+    font-family:var(--font-body); font-size:12.5px; font-weight:600;
+    padding:7px 16px; border-radius:100px; border:none; background:transparent;
+    color:#9fb2c2; cursor:pointer; transition:all .25s;
+  }
+  .play-toggle button.active{ background:var(--teal); color:#06131f; }
+
+  .pathway-detail{
+    display:grid; grid-template-columns:1fr; gap:28px; margin-top:6px;
+  }
+  .pathway-panel{
+    background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1);
+    border-radius:18px; padding:30px 32px;
+  }
+  .pathway-panel h3{font-family:var(--font-display); font-weight:700; font-size:1.4rem; margin-bottom:14px; color:var(--teal-light);}
+  .pathway-panel p{color:#d3dce4; line-height:1.8; font-size:.98rem;}
+
+  .tolerance-box{
+    margin-top:8px;
+    background:linear-gradient(135deg, rgba(46,139,168,.16), rgba(46,139,168,.02));
+    border:1px solid rgba(143,211,232,.28);
+    border-radius:18px; padding:26px 30px;
+  }
+  .tolerance-box .info-tag{color:var(--teal-light);}
+  .tolerance-box h4{font-family:var(--font-display); font-weight:700; font-size:1.2rem; margin:8px 0 12px; color:white;}
+  .tolerance-box p{color:#cfdae2; line-height:1.8; font-size:.95rem;}
+  .reg-chips{display:flex; gap:10px; margin-top:16px; flex-wrap:wrap;}
+  .reg-chip{
+    font-family:var(--font-mono); font-size:12px; padding:6px 14px;
+    border-radius:100px; border:1px solid rgba(143,211,232,.4); color:var(--teal-light);
+  }
+
+  /* ================= SECTION: PERIODONTITIS ================= */
+  #periodontitis{background:var(--ivory);}
+  .stage-tabs{
+    display:flex; flex-wrap:wrap; gap:10px; margin-bottom:38px;
+  }
+  .stage-tab{
+    font-family:var(--font-mono); font-size:12.5px; letter-spacing:.02em;
+    padding:10px 18px; border-radius:100px; border:1px solid var(--line);
+    background:var(--card); color:var(--ink-soft); cursor:pointer;
+    transition:all .25s; display:flex; align-items:center; gap:8px;
+  }
+  .stage-tab .dot{width:6px;height:6px;border-radius:50%; background:var(--ink-soft); transition:background .25s;}
+  .stage-tab.active{background:var(--navy); color:white; border-color:var(--navy);}
+  .stage-tab.active .dot{background:var(--danger);}
+
+  .stage-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:44px; align-items:start;
+  }
+  .stage-visual{
+    background:var(--card); border:1px solid var(--line); border-radius:20px;
+    padding:20px; box-shadow:0 20px 50px -30px rgba(11,24,48,.2);
+  }
+  #stage-svg{width:100%; height:auto; display:block;}
+  .diagram-legend{
+    display:flex; flex-direction:column; gap:8px;
+    margin-top:16px; padding-top:14px; border-top:1px dashed var(--line);
+    font-size:12px; color:var(--ink-soft);
+  }
+  .diagram-legend span{display:flex; align-items:center;}
+  .line-sample{width:26px; height:0; border-top:2px solid var(--ink-soft); display:inline-block; margin-right:8px;}
+  .line-sample.dashed{border-top-style:dashed;}
+
+
+  .gram-toggle{display:none; gap:10px; margin-bottom:22px; flex-wrap:wrap;}
+  .gram-toggle.show{display:flex;}
+  .gram-btn{
+    font-family:var(--font-body); font-size:12.5px; font-weight:600;
+    padding:9px 16px; border-radius:100px; border:1.5px solid var(--line);
+    background:var(--card); color:var(--ink-soft); cursor:pointer;
+    transition:all .2s;
+  }
+  .gram-btn.active{background:var(--amber); border-color:var(--amber); color:white;}
+
+  .stage-copy h3{font-family:var(--font-display); font-weight:700; font-size:1.6rem; margin-bottom:6px;}
+  .stage-copy .stage-lead{color:var(--ink-soft); margin-bottom:24px; line-height:1.7;}
+  .stage-block .k{font-family:var(--font-mono); font-size:11px; letter-spacing:.12em; color:var(--teal); text-transform:uppercase; margin-bottom:10px; display:block;}
+  .feature-list{list-style:none; margin-bottom:26px;}
+  .feature-list li{
+    position:relative; padding-left:20px; margin-bottom:11px;
+    line-height:1.65; font-size:.95rem; color:var(--ink);
+  }
+  .feature-list li::before{content:'—'; position:absolute; left:0; color:var(--danger);}
+  .component-chips{display:flex; gap:9px; flex-wrap:wrap;}
+  .component-chip{
+    font-family:var(--font-mono); font-size:12px; padding:6px 13px; border-radius:8px;
+    background:#F1ECE0; color:var(--ink); border:1px solid var(--line);
+  }
+
+  /* ================= SECTION: CONCLUSION ================= */
+  #conclusion{background:var(--navy); color:white;}
+  #conclusion .eyebrow{color:var(--teal-light);}
+  #conclusion .eyebrow::before{background:var(--teal-light);}
+  #conclusion .section-head h2{color:white;}
+  .conclusion-grid{display:flex; flex-direction:column; gap:26px; max-width:820px;}
+  .conclusion-item{
+    background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1);
+    border-radius:18px; padding:28px 30px; position:relative;
+  }
+  .conclusion-item .c-num{
+    font-family:var(--font-mono); font-size:13px; font-weight:700; color:var(--teal-light);
+    letter-spacing:.1em;
+  }
+  .conclusion-item h3{
+    font-family:var(--font-display); font-weight:700; font-size:1.25rem; color:#fff;
+    margin:8px 0 12px;
+  }
+  .conclusion-item h3 span{ font-weight:400; color:#9fb2c2; font-size:.95rem; }
+  .conclusion-item p{ color:#d3dce4; line-height:1.8; font-size:.95rem; }
+  .conclusion-item p em{ color:var(--teal-light); font-style:italic; }
+
+  /* ================= SECTION: REFERENCES ================= */
+  #references{background:var(--navy); color:white; justify-content:center;}
+  #references .section-head h2{color:white;}
+  #references .section-head p{color:#aebccb;}
+  .ref-list{max-width:820px;}
+  .ref-item{
+    display:grid; grid-template-columns:44px 1fr; gap:20px;
+    padding:22px 0; border-top:1px solid rgba(255,255,255,.12);
+  }
+  .ref-item:last-child{border-bottom:1px solid rgba(255,255,255,.12);}
+  .ref-num{font-family:var(--font-mono); color:var(--teal-light); font-size:.95rem;}
+  .ref-text{font-size:.94rem; line-height:1.75; color:#d7dfe6;}
+  .ref-text a{color:var(--teal-light); word-break:break-all;}
+  .footer-note{margin-top:50px; font-size:.82rem; color:#6f8598; font-family:var(--font-mono);}
+
+  /* ================= RESPONSIVE ================= */
+  @media (max-width:880px){
+    .slide{padding:100px 6vw 70px;}
+    .structure-grid, .stage-grid{grid-template-columns:1fr;}
+    #side-nav{display:none;}
+    .flow-node:not(:last-child)::after{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<nav id="side-nav">
+  <a href="#hero" data-tip="Home"><span class="nav-tip">Home</span></a>
+  <a href="#structure" data-tip="구조"><span class="nav-tip">구강 점막 구조</span></a>
+  <a href="#pathway" data-tip="신호전달"><span class="nav-tip">신호 전달 경로</span></a>
+  <a href="#periodontitis" data-tip="치주염"><span class="nav-tip">치주염 발생 과정</span></a>
+  <a href="#conclusion" data-tip="결론"><span class="nav-tip">탐구 결론</span></a>
+  <a href="#references" data-tip="참고문헌"><span class="nav-tip">참고문헌</span></a>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section id="hero" class="slide">
+  <canvas id="bubble-canvas"></canvas>
+  <div class="hero-inner">
+    <p class="eyebrow">Oral Mucosal Immunity</p>
+    <h1>Oral Immune System</h1>
+    <p class="hero-sub">구강 점막은 어떻게 수백 종의 세균과 공존하면서도<br>항상성을 유지할까?</p>
+    <div class="scroll-cue"><span>SCROLL</span><span class="bar"></span></div>
+  </div>
+</section>
+
+<!-- ============ 1. STRUCTURE ============ -->
+<section id="structure" class="slide reveal">
+  <div class="section-head reveal-child">
+    <p class="eyebrow">01 · Structure</p>
+    <h2>구강 점막의 다층 구조</h2>
+    <p>구강 점막은 물리적 장벽과 면역 감시 기능을 동시에 수행하는 복합 조직입니다. 각 층을 눌러 구조적 특징과 기능을 확인해보세요.</p>
+  </div>
+
+  <div class="structure-grid reveal-child d2">
+    <div class="tissue-box">
+      <div class="tissue-svg-wrap">
+      <div class="layer-pointer" id="layer-pointer">
+        <span class="pointer-label" id="pointer-label">선택됨</span>
+        <span class="arrow-shape"></span>
+      </div>
+      <svg id="tissue-svg" viewBox="0 0 500 340" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="grad-epi" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#FBC7B4"/>
+            <stop offset="100%" stop-color="#F2A98D"/>
+          </linearGradient>
+          <linearGradient id="grad-bm" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#F4D57A"/>
+            <stop offset="100%" stop-color="#E9C25C"/>
+          </linearGradient>
+          <linearGradient id="grad-lp" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#EE93A0"/>
+            <stop offset="100%" stop-color="#D9677C"/>
+          </linearGradient>
+          <pattern id="cell-pattern" width="26" height="20" patternUnits="userSpaceOnUse" patternTransform="translate(0,0)">
+            <ellipse cx="13" cy="10" rx="10" ry="7.5" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="1.1"/>
+            <circle cx="13" cy="10" r="2" fill="rgba(255,255,255,.4)"/>
+          </pattern>
+        </defs>
+
+        <!-- Epithelium -->
+        <g class="tissue-layer" data-layer="epithelium">
+          <path d="M0,0 L500,0 L500,92 C440,108 400,78 340,96 C280,114 250,84 190,100 C130,116 90,90 40,102 C22,106 8,100 0,98 Z" fill="url(#grad-epi)"/>
+          <path d="M0,0 L500,0 L500,92 C440,108 400,78 340,96 C280,114 250,84 190,100 C130,116 90,90 40,102 C22,106 8,100 0,98 Z" fill="url(#cell-pattern)"/>
+        </g>
+
+        <!-- Basement membrane -->
+        <g class="tissue-layer" data-layer="basement">
+          <path d="M0,98 C22,106 8,100 40,102 C90,90 130,116 190,100 C250,84 280,114 340,96 C400,78 440,108 500,92 L500,116 C440,132 400,102 340,120 C280,138 250,108 190,124 C130,140 90,114 40,126 C22,130 8,124 0,122 Z" fill="url(#grad-bm)"/>
+        </g>
+
+        <!-- Lamina propria -->
+        <g class="tissue-layer" data-layer="lamina">
+          <path d="M0,122 C22,130 8,124 40,126 C90,114 130,140 190,124 C250,108 280,138 340,120 C400,102 440,132 500,116 L500,340 L0,340 Z" fill="url(#grad-lp)"/>
+          <g id="lamina-contents" stroke-linecap="round"></g>
+        </g>
+      </svg>
+      </div>
+
+      <div class="legend-row">
+        <div class="legend-item"><svg viewBox="0 0 20 20"><path d="M10 2 C6 8, 6 12, 10 18 C14 12, 14 8, 10 2" fill="#C0424F"/></svg>혈관</div>
+        <div class="legend-item"><svg viewBox="0 0 20 20"><path d="M10 2 L10 18 M10 6 L4 3 M10 6 L16 3 M10 12 L4 15 M10 12 L16 15" stroke="#E2954A" stroke-width="1.6" fill="none"/></svg>림프관</div>
+        <div class="legend-item"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="5.5" fill="#7B5EA7"/><g stroke="#7B5EA7" stroke-width="1.4"><line x1="10" y1="2" x2="10" y2="4.5"/><line x1="10" y1="15.5" x2="10" y2="18"/><line x1="2" y1="10" x2="4.5" y2="10"/><line x1="15.5" y1="10" x2="18" y2="10"/></g></svg>대식세포</div>
+        <div class="legend-item"><svg viewBox="0 0 20 20"><polygon points="10,3 13,8 18,10 13,12 10,17 7,12 2,10 7,8" fill="#4E9A6E"/></svg>수지상세포</div>
+        <div class="legend-item"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="6" fill="#3E7CB8"/></svg>T 세포</div>
+      </div>
+    </div>
+
+    <div class="info-panel">
+      <div class="info-panel-content info-fade" id="layer-info">
+        <!-- filled by JS -->
+      </div>
+    </div>
+  </div>
+
+  <div class="tissue-conclusion reveal-child d3">
+    <div class="icon">💡</div>
+    <p>따라서 구강 점막은 단순한 물리적 장벽이 아니라 구조적 지지와 면역 감지를 동시에 수행하는 복합적인 조직 구조를 이룬다.</p>
+  </div>
+</section>
+
+<!-- ============ 2. PATHWAY ============ -->
+<section id="pathway" class="slide reveal">
+  <div class="section-head reveal-child">
+    <p class="eyebrow">02 · Recognition</p>
+    <h2>신호 전달 경로 미리보기</h2>
+    <p>구강 점막의 상피세포와 고유판 면역세포는 세균을 어떻게 알아채고, 염증 반응으로 이어가는 걸까요. 각 단계를 눌러 확인해보세요.</p>
+  </div>
+
+  <div class="reveal-child d2">
+    <div class="flow-track" id="flow-track"></div>
+    <div class="flow-controls">
+      <div class="keyhint"><kbd>◂</kbd><kbd>▸</kbd> 방향키로 단계 이동</div>
+      <div class="play-toggle" id="playToggle">
+        <button data-mode="auto" class="active">자동 재생</button>
+        <button data-mode="manual">수동 재생</button>
+      </div>
+    </div>
+
+    <div class="pathway-detail">
+      <div class="pathway-panel">
+        <h3 id="path-title"></h3>
+        <p id="path-desc"></p>
+      </div>
+
+      <div class="tolerance-box">
+        <p class="info-tag">Immune Tolerance</p>
+        <h4>그런데, 왜 공생 미생물에는 염증이 과도하게 일어나지 않을까?</h4>
+        <p>구강 내 공생 미생물 역시 TLR을 통해 인식되지만, NF-κB의 과도한 활성화는 억제됩니다. 이는 인식되지 않아서가 아니라, 면역 관용과 조절 기전이 신호 전달을 제한적으로 유지하기 때문입니다.</p>
+        <div class="reg-chips">
+          <span class="reg-chip">Tollip</span>
+          <span class="reg-chip">A20</span>
+          <span class="reg-chip">IRAK-M</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3. PERIODONTITIS ============ -->
+<section id="periodontitis" class="slide reveal">
+  <div class="section-head reveal-child">
+    <p class="eyebrow">03 · Dysbiosis</p>
+    <h2>치주염의 발생 과정</h2>
+    <p>Porphyromonas gingivalis가 정상 면역 신호를 교란하여 만성 염증과 조직 파괴로 이어지는 과정을 5단계로 확인해보세요.</p>
+  </div>
+
+  <div class="reveal-child d2">
+    <div class="stage-tabs" id="stage-tabs"></div>
+
+    <div class="stage-grid">
+      <div class="stage-visual">
+        <svg id="stage-svg" viewBox="0 0 460 320" xmlns="http://www.w3.org/2000/svg"></svg>
+        <div class="diagram-legend">
+          <span><span class="line-sample solid"></span>실선 : 직접적인 활성화·결합·신호 전달 관계</span>
+          <span><span class="line-sample dashed"></span>점선 : 억제되었거나, 정상 경로를 벗어나 간접적으로 이어지는 결과</span>
+        </div>
+      </div>
+
+      <div class="stage-copy">
+        <h3 id="stage-name"></h3>
+        <p class="stage-lead" id="stage-lead"></p>
+
+        <div class="gram-toggle" id="gram-toggle">
+          <button class="gram-btn active" data-type="gramNeg">그람음성균 (LPS · TLR4)</button>
+          <button class="gram-btn" data-type="gramPos">그람양성균 (리포테이코산 · TLR2)</button>
+        </div>
+
+        <div class="stage-block">
+          <span class="k">주요 특징</span>
+          <ul class="feature-list" id="stage-features"></ul>
+        </div>
+
+        <div class="stage-block">
+          <span class="k">주요 구성 요소</span>
+          <div class="component-chips" id="stage-components"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3.5 CONCLUSION ============ -->
+<section id="conclusion" class="slide reveal">
+  <div class="section-head reveal-child">
+    <p class="eyebrow">04 · Conclusion</p>
+    <h2>탐구 결론</h2>
+  </div>
+
+  <div class="conclusion-grid reveal-child d2">
+    <div class="conclusion-item">
+      <span class="c-num">01</span>
+      <h3>면역 항상성 <span>(Homeostasis)</span></h3>
+      <p>구강 점막은 단순한 물리적 장벽을 넘어, PRR(병원체 인식 수용체)을 통해 병원성 자극과 비병원성 자극을 분자 수준에서 엄격히 식별합니다. 정상 상태에서는 신호 억제 단백질을 매개로 한 면역 관용 기전이 작동하여, 수많은 공생 미생물 자극 속에서도 과도한 염증 없이 항상성을 유지합니다.</p>
+    </div>
+    <div class="conclusion-item">
+      <span class="c-num">02</span>
+      <h3>면역 교란 및 병인 <span>(Dysbiosis)</span></h3>
+      <p>치주염 유발균인 그람음성균 <em>Porphyromonas gingivalis</em>는 숙주의 TLR 신호전달 축을 선택적으로 분해 및 교란합니다. 이는 숙주의 정상적인 세균 제거 기능을 무력화하는 동시에 만성적인 염증 반응(PI3K 경로)을 지속시켜 구강 내 미생물 생태계의 균형을 붕괴(Dysbiosis)시킵니다.</p>
+    </div>
+    <div class="conclusion-item">
+      <span class="c-num">03</span>
+      <h3>의치학적 시사점 <span>(Clinical Insight)</span></h3>
+      <p>구강 내 병태생리 현상을 정확히 규명하고 제어하기 위해서는, 고정된 단선적 면역 반응의 이해를 넘어 기초 생명과학적 신호전달 체계에 기반한 분자 병리학적 접근이 필수적입니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4. REFERENCES ============ -->
+<section id="references" class="slide reveal">
+  <div class="section-head reveal-child">
+    <p class="eyebrow">05 · References</p>
+    <h2>참고 문헌</h2>
+    <p>본 웹 페이지의 내용은 아래 자료를 바탕으로 구성되었습니다.</p>
+  </div>
+
+  <div class="ref-list reveal-child d2">
+    <div class="ref-item">
+      <span class="ref-num">01</span>
+      <span class="ref-text">National Center for Biotechnology Information (NCBI Bookshelf), 구강 점막 관련 조직 구조 도해. <a href="https://www.ncbi.nlm.nih.gov/books/NBK572115/figure/article-131327.image.f1/" target="_blank" rel="noopener">ncbi.nlm.nih.gov/books/NBK572115</a></span>
+    </div>
+    <div class="ref-item">
+      <span class="ref-num">02</span>
+      <span class="ref-text">Sameer AS, Nissar S. Toll-Like Receptors (TLRs): Structure, Functions, Signaling, and Role of Their Polymorphisms in Colorectal Cancer Susceptibility. <em>Biomed Res Int.</em> 2021 Sep 12;2021:1157023. PMID: 34552981; PMCID: PMC8452412.</span>
+    </div>
+    <div class="ref-item">
+      <span class="ref-num">03</span>
+      <span class="ref-text">Maekawa T, Krauss JL, Abe T, et al. Porphyromonas gingivalis manipulates complement and TLR signaling to uncouple bacterial clearance from inflammation and promote dysbiosis. <em>Cell Host Microbe.</em> 2014 Jun 11;15(6):768-78. PMID: 24922578; PMCID: PMC4071223.</span>
+    </div>
+    <div class="ref-item">
+      <span class="ref-num">04</span>
+      <span class="ref-text">Punt, J., Stranford, S., Jones, P., &amp; Owen, J. (2020). <em>Kuby 면역학</em> (제8판, 대한미생물학회 역). 범문에듀케이션.</span>
+    </div>
+  </div>
+
+  <p class="footer-note">Oral Immune Logic Map — 구강 점막의 면역 방어와 치주염 발생 기전</p>
+</section>
+
+<script>
+/* ================= DATA ================= */
+const layerData = {
+  epithelium: {
+    tag:'01 · Epithelium',
+    name:'중층편평상피\n(Stratified Squamous Epithelium)',
+    feature:'여러 층으로 이루어진 보호용 상피 조직으로, 구강 점막의 가장 바깥층을 구성합니다.',
+    cells:'중첩된 편평상피세포',
+    func:'물리적 자극과 세균 침입으로부터 조직을 보호하는 1차 방어벽 역할을 수행합니다.'
+  },
+  basement: {
+    tag:'02 · Basement Membrane',
+    name:'기저막\n(Basement Membrane)',
+    feature:'상피와 그 아래 결합조직을 연결하는 얇은 지지 구조로, 세포외기질(ECM)로 이루어져 있습니다.',
+    cells:'비세포성 구조 (콜라겐 등 ECM 단백질)',
+    func:'조직을 구조적으로 지지하며, 세포 부착과 신호 전달의 매개체 역할을 합니다.'
+  },
+  lamina: {
+    tag:'03 · Lamina Propria',
+    name:'고유판\n(Lamina Propria)',
+    feature:'혈관과 림프관이 분포하고 면역세포가 풍부하게 존재하는 결합조직층입니다.',
+    cells:'대식세포, 수지상세포, T세포',
+    func:'영양 공급과 면역세포 이동 통로 역할을 하며, 외부 자극에 대한 면역 감시와 방어 기능을 수행합니다.'
+  }
+};
+
+const pathwaySteps = [
+  {label:'세균', title:'세균의 침입', desc:'구강 내로 유입되는 세균은 공통적인 분자 구조를 가지고 있으며, 이는 선천면역계가 병원체를 인식하는 첫 단서가 됩니다.'},
+  {label:'PAMP', title:'PAMP · 병원체 관련 분자 패턴', desc:'세균이 공통적으로 가지는 신호 구조입니다(Pathogen-Associated Molecular Pattern). 면역계는 이 패턴을 통해 병원체를 선택적으로 감지합니다.'},
+  {label:'PRR', title:'PRR · 병원체 인식 수용체', desc:'상피세포와 고유판의 면역세포가 발현하는 선천면역 수용체입니다(Pattern Recognition Receptor). PAMP를 인식하여 면역 반응의 초기 단계를 시작합니다.'},
+  {label:'TLR', title:'TLR · 톨 유사 수용체', desc:'대표적인 PRR로 세포막 또는 세포 내 소기관에 위치합니다. 그람음성균의 LPS는 TLR4, 그람양성균의 리포테이코산은 TLR2, 세균 DNA는 TLR9이 인식합니다.'},
+  {label:'MyD88', title:'MyD88 · 신호 전달 어댑터', desc:'TLR이 활성화되면 결합하는 핵심 어댑터 단백질로, TLR 신호를 세포 내부로 전달하여 하위 신호전달을 개시합니다.'},
+  {label:'NF-κB', title:'NF-κB · 염증 전사 인자', desc:'염증 반응을 유도하는 핵심 전사 조절 인자입니다. 활성화되면 염증성 사이토카인이 생성되며 면역 반응이 유도됩니다.'}
+];
+
+const stageData = [
+  {
+    key:'normal', label:'정상 상태', name:'1 · 정상 상태',
+    lead:'공생 미생물과 면역계가 균형을 이루며, 염증 없이 항상성을 유지하는 단계입니다.',
+    features:[
+      '공생 미생물은 조절된 면역 관용 상태로 존재',
+      'PRR(TLR)이 PAMP를 인식하지만 과도한 염증 반응은 억제',
+      'Tollip, A20, IRAK-M 등 조절 단백질이 신호 전달을 제한',
+      '조직 손상 없이 면역 항상성이 유지됨'
+    ],
+    components:['공생 미생물','PRR(TLR)','조절 단백질','면역 관용'],
+    tone:'normal'
+  },
+  {
+    key:'trigger', label:'병원성 자극', name:'2 · 병원성 자극',
+    lead:'Porphyromonas gingivalis가 구강 내로 침입하는 단계입니다. 그람음성균으로 LPS를 보유하여, 정상적인 경로라면 TLR4에 의해 인식되어야 합니다.',
+    features:[
+      'P. gingivalis의 구강 점막 내 침입',
+      '세포벽 구성 성분인 LPS(지질다당류) 보유',
+      '정상적인 인식 경로라면 TLR4가 이를 감지해야 함'
+    ],
+    components:['P. gingivalis','LPS','TLR4'],
+    tone:'warn'
+  },
+  {
+    key:'disrupt', label:'신호 교란', name:'3 · 신호 교란',
+    lead:'P. gingivalis는 TLR4 대신 TLR2 중심의 신호를 유도하여 면역 신호 전달에 혼란을 일으킵니다. 동시에 C5a–C5aR 상호작용이 TLR 신호를 교란합니다.',
+    features:[
+      'TLR4가 아닌 TLR2 중심의 신호를 유도',
+      '면역 신호 전달의 혼란으로 정상적인 항균 반응이 약화',
+      'C5a가 C5aR을 활성화하여 TLR 신호와 상호작용, 면역 반응 조절'
+    ],
+    components:['TLR2','C5a','C5aR'],
+    tone:'warn'
+  },
+  {
+    key:'collapse', label:'면역 붕괴', name:'4 · 면역 붕괴',
+    lead:'MyD88 신호 전달 축이 Smurf1에 의해 유비퀴틴화되어 분해되고, PI3K 경로는 지속적으로 활성화되어 만성 염증 환경이 형성됩니다.',
+    features:[
+      'Smurf1이 MyD88을 유비퀴틴화하여 분해',
+      '정상적인 세균 제거 기능이 감소',
+      'PI3K 경로의 지속적 활성화로 만성 염증 환경 유지'
+    ],
+    components:['Smurf1','Ubiquitin','PI3K'],
+    tone:'danger'
+  },
+  {
+    key:'periodontitis', label:'치주염 발생', name:'5 · 치주염 발생',
+    lead:'면역 조절의 붕괴로 공생 미생물 균형이 무너지고, 그 공간에서 P. gingivalis가 선택적으로 증식합니다. 이 과정이 반복되며 치주 조직 파괴를 동반한 치주염이 발생합니다.',
+    features:[
+      '주변 정상 공생 미생물 균형의 붕괴',
+      '미생물이 제거된 공간에서 P. gingivalis의 선택적 증식',
+      '반복적인 염증으로 치주 조직 파괴가 진행되어 치주염 발생'
+    ],
+    components:['미생물 불균형 (Dysbiosis)','만성 염증','치주 조직 파괴'],
+    tone:'danger'
+  }
+];
+
+const gramVariants = {
+  gramNeg:{
+    lead:'Porphyromonas gingivalis를 포함한 그람음성균은 세포벽 외막에 LPS(지질다당류)를 가지고 있으며, 정상적인 경로라면 TLR4에 의해 인식됩니다.',
+    features:[
+      'P. gingivalis 등 그람음성균이 구강 점막 내로 침입',
+      '세포벽 외막 구성 성분인 LPS(지질다당류) 보유',
+      '정상적인 인식 경로라면 TLR4가 이를 감지해야 함'
+    ],
+    components:['P. gingivalis','LPS','TLR4']
+  },
+  gramPos:{
+    lead:'그람양성균은 세포벽에 리포테이코산(lipoteichoic acid)을 가지고 있으며, 이는 TLR2에 의해 인식됩니다.',
+    features:[
+      '그람양성균이 구강 점막 내로 침입',
+      '세포벽 구성 성분인 리포테이코산(lipoteichoic acid) 보유',
+      'TLR2가 이를 감지하여 초기 면역 반응을 개시함'
+    ],
+    components:['그람양성균','리포테이코산','TLR2']
+  }
+};
+let currentGramType = 'gramNeg';
+
+/* ================= HERO BUBBLES ================= */
+(function(){
+  const canvas = document.getElementById('bubble-canvas');
+  const ctx = canvas.getContext('2d');
+  let w,h,bubbles=[];
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function resize(){
+    w = canvas.width = canvas.offsetWidth;
+    h = canvas.height = canvas.offsetHeight;
+  }
+  function makeBubbles(){
+    bubbles = [];
+    const count = Math.max(28, Math.floor(w/34));
+    for(let i=0;i<count;i++){
+      bubbles.push({
+        x: Math.random()*w,
+        y: h + Math.random()*h,
+        r: 1.5 + Math.random()*4.5,
+        speed: .25 + Math.random()*.7,
+        drift: (Math.random()-0.5)*.4,
+        alpha: .15 + Math.random()*.45,
+        glow: Math.random() > 0.82
+      });
+    }
+  }
+  function tick(){
+    ctx.clearRect(0,0,w,h);
+    bubbles.forEach(b=>{
+      b.y -= b.speed;
+      b.x += Math.sin(b.y*0.01)*b.drift;
+      if(b.y < -20){ b.y = h+20; b.x = Math.random()*w; }
+      ctx.beginPath();
+      ctx.arc(b.x,b.y,b.r,0,Math.PI*2);
+      ctx.fillStyle = `rgba(143,211,232,${b.alpha})`;
+      ctx.fill();
+      if(b.glow){
+        ctx.beginPath();
+        ctx.arc(b.x,b.y,b.r*3,0,Math.PI*2);
+        ctx.fillStyle = `rgba(46,139,168,${b.alpha*0.12})`;
+        ctx.fill();
+      }
+    });
+    if(!reduced) requestAnimationFrame(tick);
+  }
+  window.addEventListener('resize', ()=>{resize(); makeBubbles();});
+  resize(); makeBubbles();
+  if(!reduced){ tick(); } else {
+    // draw a static frame
+    tick_once: {
+      ctx.clearRect(0,0,w,h);
+      bubbles.forEach(b=>{
+        ctx.beginPath(); ctx.arc(b.x,b.y,b.r,0,Math.PI*2);
+        ctx.fillStyle = `rgba(143,211,232,${b.alpha})`; ctx.fill();
+      });
+    }
+  }
+})();
+
+/* ================= REVEAL ON SCROLL ================= */
+const revealObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting) e.target.classList.add('in-view');
+  });
+},{threshold:0.2});
+document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
+
+/* ================= SIDE NAV SYNC ================= */
+const navLinks = document.querySelectorAll('#side-nav a');
+const slides = document.querySelectorAll('.slide');
+const navObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      navLinks.forEach(a=>a.classList.remove('active'));
+      const match = document.querySelector(`#side-nav a[href="#${entry.target.id}"]`);
+      if(match) match.classList.add('active');
+    }
+  });
+},{threshold:0.5});
+slides.forEach(s=>navObserver.observe(s));
+
+/* ================= LAYER INFO PANEL ================= */
+const layerPointerPos = { epithelium:14.4, basement:32.4, lamina:67.9 };
+const layerShortName = { epithelium:'중층편평상피', basement:'기저막', lamina:'고유판' };
+
+function renderLayer(key){
+  const d = layerData[key];
+  const panel = document.getElementById('layer-info');
+  panel.style.opacity = 0;
+  setTimeout(()=>{
+    panel.innerHTML = `
+      <p class="info-tag">${d.tag}</p>
+      <div class="info-name">${d.name.replace('\n','<br>')}</div>
+      <div class="info-row"><div class="k">구조적 특징</div><div class="v">${d.feature}</div></div>
+      <div class="info-row"><div class="k">존재 세포</div><div class="v">${d.cells}</div></div>
+      <div class="info-row"><div class="k">주요 기능</div><div class="v">${d.func}</div></div>
+    `;
+    panel.style.opacity = 1;
+  }, 150);
+
+  document.querySelectorAll('.tissue-layer').forEach(l=>{
+    l.classList.toggle('active-layer', l.dataset.layer === key);
+  });
+
+  const pointer = document.getElementById('layer-pointer');
+  const label = document.getElementById('pointer-label');
+  pointer.style.top = layerPointerPos[key] + '%';
+  label.textContent = layerShortName[key] + ' 선택됨';
+}
+document.querySelectorAll('.tissue-layer').forEach(l=>{
+  l.addEventListener('click', ()=>renderLayer(l.dataset.layer));
+});
+renderLayer('epithelium');
+
+/* draw lamina propria contents (vessels + immune cells) */
+(function(){
+  const g = document.getElementById('lamina-contents');
+  const ns = 'http://www.w3.org/2000/svg';
+  function path(d, stroke, w){
+    const p = document.createElementNS(ns,'path');
+    p.setAttribute('d', d); p.setAttribute('stroke', stroke);
+    p.setAttribute('stroke-width', w); p.setAttribute('fill','none');
+    p.setAttribute('opacity','0.9');
+    g.appendChild(p);
+  }
+  // blood vessel (red branching tree)
+  path('M90,340 C88,300 80,270 95,230 C105,205 90,190 100,165', '#C0424F', 4.5);
+  path('M95,230 C110,215 122,220 132,200', '#C0424F', 2.6);
+  path('M100,165 C108,150 118,150 122,138', '#C0424F', 2.2);
+
+  path('M330,340 C332,295 322,260 338,225 C348,203 336,185 344,160', '#C0424F', 4.2);
+  path('M338,225 C352,212 362,218 372,200', '#C0424F', 2.4);
+
+  // lymph vessel (amber, thinner branching)
+  path('M220,340 C222,300 214,270 224,240 C230,222 220,205 226,185', '#E2954A', 2.6);
+  path('M224,240 C236,230 246,234 254,220', '#E2954A', 1.8);
+  path('M226,185 C232,172 240,172 244,162', '#E2954A', 1.6);
+
+  function cell(cx, cy, type){
+    if(type==='macro'){
+      const c = document.createElementNS(ns,'circle');
+      c.setAttribute('cx',cx); c.setAttribute('cy',cy); c.setAttribute('r',9);
+      c.setAttribute('fill','#7B5EA7'); c.setAttribute('opacity','0.92');
+      g.appendChild(c);
+      [0,45,90,135,180,225,270,315].forEach(ang=>{
+        const rad = ang*Math.PI/180;
+        const l = document.createElementNS(ns,'line');
+        l.setAttribute('x1', cx+Math.cos(rad)*9); l.setAttribute('y1', cy+Math.sin(rad)*9);
+        l.setAttribute('x2', cx+Math.cos(rad)*14); l.setAttribute('y2', cy+Math.sin(rad)*14);
+        l.setAttribute('stroke','#7B5EA7'); l.setAttribute('stroke-width','2');
+        g.appendChild(l);
+      });
+    } else if(type==='dc'){
+      const pts = [0,1,2,3,4,5,6,7].map(i=>{
+        const ang = i*45*Math.PI/180;
+        const r = i%2===0? 11: 5;
+        return `${cx+Math.cos(ang)*r},${cy+Math.sin(ang)*r}`;
+      }).join(' ');
+      const poly = document.createElementNS(ns,'polygon');
+      poly.setAttribute('points', pts); poly.setAttribute('fill','#4E9A6E'); poly.setAttribute('opacity','0.92');
+      g.appendChild(poly);
+    } else if(type==='t'){
+      const c = document.createElementNS(ns,'circle');
+      c.setAttribute('cx',cx); c.setAttribute('cy',cy); c.setAttribute('r',7);
+      c.setAttribute('fill','#3E7CB8'); c.setAttribute('opacity','0.92');
+      g.appendChild(c);
+    }
+  }
+  cell(150,175,'macro');
+  cell(270,255,'macro');
+  cell(190,290,'dc');
+  cell(370,270,'dc');
+  cell(210,220,'t');
+  cell(310,175,'t');
+  cell(120,290,'t');
+})();
+
+/* ================= PATHWAY FLOW ================= */
+const flowTrack = document.getElementById('flow-track');
+pathwaySteps.forEach((s,i)=>{
+  const node = document.createElement('div');
+  node.className = 'flow-node';
+  node.innerHTML = `<span class="num">STEP ${String(i+1).padStart(2,'0')}</span>${s.label}`;
+  node.addEventListener('click', ()=>renderPathwayStep(i));
+  flowTrack.appendChild(node);
+});
+function renderPathwayStep(i){
+  document.querySelectorAll('.flow-node').forEach((n,idx)=>n.classList.toggle('active', idx===i));
+  document.getElementById('path-title').textContent = pathwaySteps[i].title;
+  document.getElementById('path-desc').textContent = pathwaySteps[i].desc;
+}
+renderPathwayStep(0);
+
+let pathwayInView = false;
+const pathwayObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.target.id==='pathway') pathwayInView = e.isIntersecting; });
+},{threshold:0.4});
+pathwayObserver.observe(document.getElementById('pathway'));
+
+let playMode = 'auto';
+let pathAuto = null;
+function startAuto(){
+  clearInterval(pathAuto);
+  pathAuto = setInterval(()=>{
+    const active = document.querySelector('.flow-node.active');
+    let idx = Array.from(flowTrack.children).indexOf(active);
+    idx = (idx+1) % pathwaySteps.length;
+    renderPathwayStep(idx);
+  }, 4200);
+}
+function stopAuto(){ clearInterval(pathAuto); }
+startAuto();
+
+document.querySelectorAll('#playToggle button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    playMode = btn.dataset.mode;
+    document.querySelectorAll('#playToggle button').forEach(b=>b.classList.toggle('active', b===btn));
+    if(playMode==='auto') startAuto(); else stopAuto();
+  });
+});
+
+function stepPathway(delta){
+  const active = document.querySelector('.flow-node.active');
+  let idx = Array.from(flowTrack.children).indexOf(active);
+  idx = (idx + delta + pathwaySteps.length) % pathwaySteps.length;
+  renderPathwayStep(idx);
+  if(playMode==='auto') startAuto(); // restart timer so it doesn't jump right after a manual move
+}
+window.addEventListener('keydown', (e)=>{
+  if(!pathwayInView) return;
+  if(e.key === 'ArrowRight'){ e.preventDefault(); stepPathway(1); }
+  else if(e.key === 'ArrowLeft'){ e.preventDefault(); stepPathway(-1); }
+});
+flowTrack.addEventListener('click', (e)=>{
+  const node = e.target.closest('.flow-node');
+  if(node && playMode==='auto') startAuto();
+});
+
+/* ================= STAGE TABS + DIAGRAM ================= */
+const stageTabsEl = document.getElementById('stage-tabs');
+stageData.forEach((s,i)=>{
+  const tab = document.createElement('div');
+  tab.className = 'stage-tab';
+  tab.innerHTML = `<span class="dot"></span>${s.label}`;
+  tab.addEventListener('click', ()=>renderStage(i));
+  stageTabsEl.appendChild(tab);
+});
+
+const toneColors = {
+  normal: {main:'#2E8BA8', bg:'#E7F3F6'},
+  warn: {main:'#E2954A', bg:'#FBEEDD'},
+  danger:{main:'#C94B4B', bg:'#FBE7E7'}
+};
+
+function drawStageDiagram(stage){
+  const svg = document.getElementById('stage-svg');
+  svg.innerHTML = '';
+  const ns='http://www.w3.org/2000/svg';
+  const tone = toneColors[stage.tone];
+
+  function rect(x,y,w,h,label,color,sub){
+    const g = document.createElementNS(ns,'g');
+    const r = document.createElementNS(ns,'rect');
+    r.setAttribute('x',x); r.setAttribute('y',y); r.setAttribute('width',w); r.setAttribute('height',h);
+    r.setAttribute('rx',12); r.setAttribute('fill', color); r.setAttribute('opacity','0.14');
+    r.setAttribute('stroke', color); r.setAttribute('stroke-width','1.6');
+    g.appendChild(r);
+    const t = document.createElementNS(ns,'text');
+    t.setAttribute('x', x+w/2); t.setAttribute('y', sub? y+h/2-4 : y+h/2+5);
+    t.setAttribute('text-anchor','middle'); t.setAttribute('font-family','Pretendard, sans-serif');
+    t.setAttribute('font-size', sub? '13':'14'); t.setAttribute('font-weight','700'); t.setAttribute('fill','#16202A');
+    t.textContent = label;
+    g.appendChild(t);
+    if(sub){
+      const t2 = document.createElementNS(ns,'text');
+      t2.setAttribute('x', x+w/2); t2.setAttribute('y', y+h/2+16);
+      t2.setAttribute('text-anchor','middle'); t2.setAttribute('font-family','Pretendard, sans-serif');
+      t2.setAttribute('font-size','10.5'); t2.setAttribute('fill','#57687A');
+      t2.textContent = sub;
+      g.appendChild(t2);
+    }
+    svg.appendChild(g);
+  }
+  function arrow(x1,y1,x2,y2,dashed){
+    const l = document.createElementNS(ns,'line');
+    l.setAttribute('x1',x1); l.setAttribute('y1',y1); l.setAttribute('x2',x2); l.setAttribute('y2',y2);
+    l.setAttribute('stroke', tone.main); l.setAttribute('stroke-width','2');
+    if(dashed) l.setAttribute('stroke-dasharray','5,4');
+    l.setAttribute('marker-end','url(#arrowhead)');
+    svg.appendChild(l);
+  }
+  const defs = document.createElementNS(ns,'defs');
+  defs.innerHTML = `<marker id="arrowhead" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="${tone.main}"/></marker>`;
+  svg.appendChild(defs);
+
+  const layouts = {
+    normal: ()=>{
+      rect(30,40,150,64,'공생 미생물','#2E8BA8','정상균총');
+      rect(260,40,170,64,'PRR (TLR)','#2E8BA8','인식·감시');
+      arrow(180,72,260,72);
+      rect(30,150,150,64,'조절 단백질','#8FD3E8','Tollip · A20 · IRAK-M');
+      rect(260,150,170,64,'NF-κB 억제','#8FD3E8','과잉 염증 차단');
+      arrow(180,182,260,182);
+      arrow(335,104,335,150,true);
+      rect(120,240,220,60,'면역 항상성 유지','#2E8BA8','조직 손상 없음');
+      arrow(335,214,230,240,true);
+    },
+    trigger_gramNeg: ()=>{
+      rect(30,50,170,64,'P. gingivalis','#E2954A','그람음성균');
+      rect(260,50,170,64,'LPS','#E2954A','세포벽 구성물질');
+      arrow(200,82,260,82);
+      rect(150,180,170,64,'TLR4','#E2954A','정상 인식 경로');
+      arrow(345,114,235,180,true);
+    },
+    trigger_gramPos: ()=>{
+      rect(30,50,170,64,'그람양성균','#2E8BA8','비교 대상균');
+      rect(260,50,170,64,'리포테이코산','#2E8BA8','세포벽 구성물질');
+      arrow(200,82,260,82);
+      rect(150,180,170,64,'TLR2','#2E8BA8','정상 인식 경로');
+      arrow(345,114,235,180,true);
+    },
+    disrupt: ()=>{
+      rect(30,40,150,58,'TLR4 (원래 경로)','#9AA7B0','약화됨');
+      rect(260,40,170,58,'TLR2 (교란 경로)','#E2954A','신호 유도');
+      arrow(180,69,260,69);
+      rect(30,150,150,58,'C5a','#E2954A','보체 활성물질');
+      rect(260,150,170,58,'C5aR 상호작용','#E2954A','신호 조절');
+      arrow(180,179,260,179);
+      rect(120,250,220,55,'면역 신호 혼란','#C94B4B','항균 반응 약화');
+      arrow(345,208,230,250,true);
+      arrow(105,208,230,250,true);
+    },
+    collapse: ()=>{
+      rect(30,40,170,60,'MyD88','#C94B4B','신호 축');
+      rect(260,40,170,60,'Smurf1','#C94B4B','유비퀴틴 표지');
+      arrow(200,70,260,70);
+      rect(150,150,170,55,'분해 (Ubiquitination)','#C94B4B','세균 제거 기능 저하');
+      arrow(335,100,235,150,true);
+      rect(30,240,170,55,'PI3K 활성화','#E2954A','지속적 신호 유지');
+      rect(260,240,170,55,'만성 염증 환경','#C94B4B','염증 지속');
+      arrow(200,267,260,267);
+    },
+    periodontitis: ()=>{
+      rect(30,40,190,58,'공생 미생물 균형 붕괴','#C94B4B','Dysbiosis');
+      rect(250,40,180,58,'P. gingivalis 증식','#C94B4B','선택적 우세');
+      arrow(220,69,250,69);
+      rect(60,150,340,58,'반복적 만성 염증','#C94B4B','염증 지속 및 확산');
+      arrow(340,98,230,150,true);
+      rect(90,255,280,55,'치주 조직 파괴 · 치주염 발생','#8A2C2C','최종 결과');
+      arrow(230,208,230,255,true);
+    }
+  };
+  if(stage.key === 'trigger'){
+    layouts['trigger_'+currentGramType]();
+  } else {
+    layouts[stage.key]();
+  }
+}
+
+function renderStage(i){
+  const s = stageData[i];
+  document.querySelectorAll('.stage-tab').forEach((t,idx)=>t.classList.toggle('active', idx===i));
+  document.getElementById('stage-name').textContent = s.name;
+
+  const gramToggle = document.getElementById('gram-toggle');
+  if(s.key === 'trigger'){
+    gramToggle.classList.add('show');
+    applyGramContent();
+  } else {
+    gramToggle.classList.remove('show');
+    document.getElementById('stage-lead').textContent = s.lead;
+    document.getElementById('stage-features').innerHTML = s.features.map(f=>`<li>${f}</li>`).join('');
+    document.getElementById('stage-components').innerHTML = s.components.map(c=>`<span class="component-chip">${c}</span>`).join('');
+    drawStageDiagram(s);
+  }
+}
+
+function applyGramContent(){
+  const s = stageData[1];
+  const d = gramVariants[currentGramType];
+  document.getElementById('stage-lead').textContent = d.lead;
+  document.getElementById('stage-features').innerHTML = d.features.map(f=>`<li>${f}</li>`).join('');
+  document.getElementById('stage-components').innerHTML = d.components.map(c=>`<span class="component-chip">${c}</span>`).join('');
+  drawStageDiagram(s);
+}
+
+document.querySelectorAll('.gram-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    currentGramType = btn.dataset.type;
+    document.querySelectorAll('.gram-btn').forEach(b=> b.classList.toggle('active', b===btn));
+    applyGramContent();
+  });
+});
+
+renderStage(0);
+</script>
+</body>
+</html>
